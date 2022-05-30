@@ -4,15 +4,22 @@ package com.example.taxibooking.model;
 import com.example.taxibooking.command.CustomerCommand;
 import com.example.taxibooking.enums.Gender;
 import com.example.taxibooking.enums.UserType;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class Customer extends AbstractEntity{
+@Data
+public class Customer{
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -23,16 +30,20 @@ public class Customer extends AbstractEntity{
 
     @ManyToOne
     private Driver driver;
-
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @OneToOne
-    private Location home;
-    @OneToOne
-    private Location work;
-    @OneToOne
-    private Location lastLocation;
 
+    @OneToOne
+    private ExactLocation home;
+    @OneToOne
+    private ExactLocation work;
+    @OneToOne
+    private ExactLocation lastKnownLocation;
+
+    /*@OneToOne
+    private ExactLocation home;
+    @OneToOne
+    private ExactLocation work;*/
     public static Customer createUser(final CustomerCommand customerCommand){
         final Customer customer = new Customer();
         customer.firstName = customerCommand.getFirstName();
@@ -42,10 +53,15 @@ public class Customer extends AbstractEntity{
         customer.password = customerCommand.getPassword();
         customer.role = customerCommand.getRole();
         customer.gender = customerCommand.getGender();
-        customer.home = customerCommand.getHome();
-        customer.work = customerCommand.getWork();
-        customer.lastLocation = customerCommand.getLastLocation();
+        //customer.home = customerCommand.getHome();
+        //customer.work = customerCommand.getWork();
 
         return customer;
+    }
+    public void update(final CustomerCommand customerCommand){
+        this.firstName = customerCommand.getFirstName();
+        this.lastName = customerCommand.getLastName();
+        this.email = customerCommand.getEmail();
+        this.phone = customerCommand.getPhone();
     }
 }

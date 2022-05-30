@@ -5,13 +5,11 @@ import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.enums.DriverType;
 import com.example.taxibooking.enums.Rating;
-import com.google.maps.FindPlaceFromTextRequest;
-import com.google.maps.model.AddressComponent;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.remoting.support.DefaultRemoteInvocationExecutor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,11 +18,16 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Driver extends AbstractEntity{
+@Data
+public class Driver{
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private String id;
 
     private LocalDateTime startDriveWithClient;
     private LocalDateTime endTimeWithClient;
@@ -38,10 +41,10 @@ public class Driver extends AbstractEntity{
     private Rating rating;
 
     @OneToOne
-    private Location lastLocation;
+    private ExactLocation lastKnownLocation;
 
     @OneToOne
-    private Location direction;
+    private ExactLocation home;
 
     @OneToMany(mappedBy = "driver")
     private List<Booking> bookings; // bookings that the driver actually drove
@@ -51,14 +54,15 @@ public class Driver extends AbstractEntity{
 
     private Boolean isAvailable;
 
-    public static Driver createDriver(final DriverCommand driverCommand){
+    public static Driver createDriver(final DriverCommand driverCommand, final ExactLocation lastLocation, final ExactLocation direction){
         final Driver driver = new Driver();
 
         driver.startDriveWithClient = driverCommand.getStartDriveWithClient();
         driver.endTimeWithClient = driverCommand.getEndTimeWithClient();
         driver.status = driverCommand.getStatus();
         driver.driverType = driverCommand.getDriverType();
-        driver.lastLocation = driverCommand.getLastLocation();
+        /*driver.lastLocation = lastLocation;
+        driver.direction = direction;*/
         driver.driverType = driverCommand.getDriverType();
 
         return driver;

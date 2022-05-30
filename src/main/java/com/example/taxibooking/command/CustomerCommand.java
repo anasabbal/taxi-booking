@@ -3,13 +3,12 @@ package com.example.taxibooking.command;
 
 import com.example.taxibooking.enums.Gender;
 import com.example.taxibooking.enums.UserType;
-import com.example.taxibooking.model.Location;
+import com.example.taxibooking.model.ExactLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.OneToOne;
 
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class CustomerCommand {
     private UserType role;
     //private Set<Driver> driver;
     private Gender gender;
-    private Location home;
-    private Location work;
-    private Location lastLocation;
+    private ExactLocation home;
+    private ExactLocation work;
+    private ExactLocation lastLocation;
 }
