@@ -5,12 +5,9 @@ import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.enums.DriverType;
 import com.example.taxibooking.enums.Rating;
+import com.example.taxibooking.exception.ExceptionPayload;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -19,21 +16,12 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Driver{
+public class Driver extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String id;
-
-    private LocalDateTime startDriveWithClient;
-    private LocalDateTime endTimeWithClient;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Account account;
     @Enumerated(EnumType.STRING)
     private DriverStatus status;
-
     @Enumerated(EnumType.STRING)
     private DriverType driverType;
 
@@ -46,6 +34,9 @@ public class Driver{
     @OneToOne
     private ExactLocation home;
 
+    @OneToOne
+    private Booking activeBooking = null;  // driver.active_booking_id  either be null or be a foreign key
+
     @OneToMany(mappedBy = "driver")
     private List<Booking> bookings; // bookings that the driver actually drove
 
@@ -57,8 +48,6 @@ public class Driver{
     public static Driver createDriver(final DriverCommand driverCommand, final ExactLocation lastLocation, final ExactLocation direction){
         final Driver driver = new Driver();
 
-        driver.startDriveWithClient = driverCommand.getStartDriveWithClient();
-        driver.endTimeWithClient = driverCommand.getEndTimeWithClient();
         driver.status = driverCommand.getStatus();
         driver.driverType = driverCommand.getDriverType();
         /*driver.lastLocation = lastLocation;

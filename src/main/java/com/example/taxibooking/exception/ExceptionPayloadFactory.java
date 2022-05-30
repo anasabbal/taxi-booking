@@ -18,7 +18,13 @@ public enum ExceptionPayloadFactory {
     HOLIDAY_NOT_FOUND(5, HttpStatus.NOT_FOUND, "holiday.not.found"),
 
     // EMAIL :
-    EMAIL_NOT_FOUND(5, HttpStatus.NOT_FOUND, "email.not.found");
+    EMAIL_NOT_FOUND(5, HttpStatus.NOT_FOUND, "email.not.found"),
+
+    LOCATION_NOT_FOUND(5, HttpStatus.NOT_FOUND, "location.not.found"),
+
+    BOOKING_NOT_FOUND(5, HttpStatus.NOT_FOUND, "booking.not.found"),
+
+    DRIVER_NOT_FOUND(5, HttpStatus.NOT_FOUND, "driver.not.found");
 
 
 

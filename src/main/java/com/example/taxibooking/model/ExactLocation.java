@@ -3,15 +3,18 @@ package com.example.taxibooking.model;
 
 import com.example.taxibooking.command.LocationCommand;
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 public class ExactLocation extends AbstractEntity{
     private Double latitude;
     private Double longitude;
 
+    public ExactLocation() {
+
+    }
 
     public static ExactLocation createLocation(final LocationCommand locationCommand){
         final ExactLocation exactLocation = new ExactLocation();
@@ -19,6 +22,11 @@ public class ExactLocation extends AbstractEntity{
         exactLocation.latitude = locationCommand.getLatitude();
 
         return exactLocation;
+    }
+
+    public void updateLocation(final LocationCommand locationCommand){
+        this.latitude = locationCommand.getLatitude();
+        this.longitude = locationCommand.getLongitude();
     }
 
     public double distanceKm(ExactLocation exactLocation) {

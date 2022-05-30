@@ -2,6 +2,8 @@ package com.example.taxibooking.model;
 
 
 import com.example.taxibooking.command.CustomerCommand;
+import com.example.taxibooking.command.DriverCommand;
+import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.enums.Gender;
 import com.example.taxibooking.enums.UserType;
 import lombok.*;
@@ -10,28 +12,23 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class Customer{
+public class Customer extends AbstractEntity{
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String id;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Account account;
     private String firstName;
-    private String lastName;
     private String email;
     private String phone;
-    private String password;
-    @Enumerated(EnumType.STRING)
-    private UserType role;
-
     @ManyToOne
     private Driver driver;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @OneToOne
+    private Booking activeBooking = null;
 
     @OneToOne
     private ExactLocation home;
@@ -39,29 +36,23 @@ public class Customer{
     private ExactLocation work;
     @OneToOne
     private ExactLocation lastKnownLocation;
-
-    /*@OneToOne
-    private ExactLocation home;
-    @OneToOne
-    private ExactLocation work;*/
-    public static Customer createUser(final CustomerCommand customerCommand){
+    public static Customer createUser(final CustomerCommand customerCommand,
+                                      final ExactLocation home,
+                                      final ExactLocation work ,
+                                      final ExactLocation lastKnownLocation, final Driver driver){
         final Customer customer = new Customer();
         customer.firstName = customerCommand.getFirstName();
-        customer.lastName = customerCommand.getLastName();
         customer.email = customerCommand.getEmail();
         customer.phone = customerCommand.getPhone();
-        customer.password = customerCommand.getPassword();
-        customer.role = customerCommand.getRole();
         customer.gender = customerCommand.getGender();
-        //customer.home = customerCommand.getHome();
-        //customer.work = customerCommand.getWork();
+        customer.work = work;
+        customer.home = home;
+        customer.lastKnownLocation = lastKnownLocation;
+        customer.driver = driver;
 
         return customer;
     }
     public void update(final CustomerCommand customerCommand){
-        this.firstName = customerCommand.getFirstName();
-        this.lastName = customerCommand.getLastName();
-        this.email = customerCommand.getEmail();
-        this.phone = customerCommand.getPhone();
+
     }
 }
