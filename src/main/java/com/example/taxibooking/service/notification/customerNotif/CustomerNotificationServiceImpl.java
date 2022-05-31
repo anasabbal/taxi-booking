@@ -1,4 +1,4 @@
-package com.example.taxibooking.service.notification;
+package com.example.taxibooking.service.notification.customerNotif;
 
 
 import com.example.taxibooking.model.NotificationCustomer;

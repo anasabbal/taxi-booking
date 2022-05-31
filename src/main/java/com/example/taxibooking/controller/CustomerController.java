@@ -6,10 +6,7 @@ import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.model.Customer;
-import com.example.taxibooking.model.NotificationCustomer;
-import com.example.taxibooking.repository.NotificationCustomerRepository;
 import com.example.taxibooking.service.customer.CustomerService;
-import com.example.taxibooking.service.notification.CustomerNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +21,6 @@ public class CustomerController {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
 
-    private final CustomerNotificationService customerNotificationService;
-
-
-    @GetMapping("/customers/notification")
-    public ResponseEntity<Page<NotificationCustomer>> getAllNotificationsCustomer(Pageable pageable){
-        return ResponseEntity.ok(customerNotificationService.getAllNotificationCustomer(pageable));
-    }
 
     @GetMapping("/all")
     public ResponseEntity<Page<CustomerDto>> getAll(Pageable pageable){

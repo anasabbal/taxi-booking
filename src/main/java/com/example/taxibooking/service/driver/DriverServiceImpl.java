@@ -26,9 +26,6 @@ import org.springframework.stereotype.Service;
 public class DriverServiceImpl implements DriverService{
     private final DriverRepository driverRepository;
     private final LocationService locationService;
-
-    private final LocationRepository locationRepository;
-
     private final DriverMapper driverMapper;
 
     @Override
@@ -65,10 +62,6 @@ public class DriverServiceImpl implements DriverService{
 
         return driverRepository.save(driver);
     }
-    public Driver addHomeLocation(String driverId, String customerId){
-        return null;
-    }
-
     @Override
     public Driver updateDriverLocation(String driverId, LocationCommand location) {
         final Driver driver = findDriverById(driverId);

@@ -54,14 +54,11 @@ public class Driver extends AbstractEntity{
             throw new RuntimeException("Driver approved");
         }
         isAvailable = available;
+        //return isAvailable;
     }
     public void acceptRequest(Customer customer){
         this.status = DriverStatus.APPROVED;
         this.notificationDriver.linkToCustomer(customer);
-    }
-
-    public void findCustomerIdInNotification(){
-
     }
     public void cancelRequest(Customer customer){
         this.status = DriverStatus.DENIED;

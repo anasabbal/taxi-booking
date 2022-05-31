@@ -114,7 +114,6 @@ public class CustomerServiceImpl implements CustomerService {
         customer.getNotificationCustomer().linkToDriverNotification(driver);
 
 
-
         if(driver.getIsAvailable()){
             customer.linkToDriver(driver);
             driver.setStatus(DriverStatus.IN_ROAD);
