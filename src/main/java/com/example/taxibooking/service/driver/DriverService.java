@@ -17,4 +17,5 @@ public interface DriverService {
     Driver updateDriverLocation(String driverId, LocationCommand location);
 
     public Driver addLastLocationToDriver(String driverId, LocationCommand locationCommand);
+
 }

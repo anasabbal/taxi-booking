@@ -10,6 +10,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -33,6 +34,10 @@ public class Customer extends AbstractEntity{
     private ExactLocation work;
     @OneToOne
     private ExactLocation lastKnownLocation;
+
+    @OneToOne
+    private NotificationCustomer notificationCustomer;
+
     public static Customer createUser(final CustomerCommand customerCommand,
                                       final ExactLocation home,
                                       final ExactLocation work ,

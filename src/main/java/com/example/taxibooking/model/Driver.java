@@ -5,17 +5,22 @@ import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.enums.DriverType;
 import com.example.taxibooking.enums.Rating;
-import lombok.Data;
+import lombok.*;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Driver extends AbstractEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
     @Enumerated(EnumType.STRING)
-    private DriverStatus status;
+    private DriverStatus status = DriverStatus.DENIED;
     @Enumerated(EnumType.STRING)
     private DriverType driverType;
 
@@ -27,8 +32,12 @@ public class Driver extends AbstractEntity{
     private ExactLocation home;
     private Boolean isAvailable;
 
+    @OneToOne
+    private NotificationDriver notificationDriver;
 
+    public Driver(){
 
+    }
     public static Driver createDriver(final DriverCommand driverCommand, final ExactLocation lastLocation, final ExactLocation home){
         final Driver driver = new Driver();
 
@@ -40,12 +49,23 @@ public class Driver extends AbstractEntity{
 
         return driver;
     }
-
     public void setIsAvailable(Boolean available){
         if(available && !status.equals(DriverStatus.APPROVED)){
             throw new RuntimeException("Driver approved");
         }
         isAvailable = available;
+    }
+    public void acceptRequest(Customer customer){
+        this.status = DriverStatus.APPROVED;
+        this.notificationDriver.linkToCustomer(customer);
+    }
+
+    public void findCustomerIdInNotification(){
+
+    }
+    public void cancelRequest(Customer customer){
+        this.status = DriverStatus.DENIED;
+        this.notificationDriver.getCustomers().remove(customer);
     }
     public void linkToLastLocation(ExactLocation lastKnownLocation){
         this.lastKnownLocation = lastKnownLocation;

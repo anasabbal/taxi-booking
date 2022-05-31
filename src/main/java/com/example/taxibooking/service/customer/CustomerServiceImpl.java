@@ -4,10 +4,12 @@ package com.example.taxibooking.service.customer;
 import com.example.taxibooking.command.CustomerCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
+import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.ExactLocation;
+import com.example.taxibooking.model.NotificationDriver;
 import com.example.taxibooking.repository.CustomerRepository;
 import com.example.taxibooking.service.driver.DriverService;
 import com.example.taxibooking.service.location.LocationService;
@@ -108,12 +110,15 @@ public class CustomerServiceImpl implements CustomerService {
         final Customer customer = findById(customerId);
         final Driver driver = driverService.findDriverById(driverId);
 
+        driver.getNotificationDriver().linkToCustomer(customer);
+        customer.getNotificationCustomer().linkToDriverNotification(driver);
+
+
+
         if(driver.getIsAvailable()){
-
+            customer.linkToDriver(driver);
+            driver.setStatus(DriverStatus.IN_ROAD);
         }
-
-        return null;
-
-
+        return customerRepository.save(customer);
     }
 }
