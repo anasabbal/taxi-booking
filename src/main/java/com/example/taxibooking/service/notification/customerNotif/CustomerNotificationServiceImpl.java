@@ -1,7 +1,10 @@
 package com.example.taxibooking.service.notification.customerNotif;
 
 
+import com.example.taxibooking.model.Customer;
+import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.NotificationCustomer;
+import com.example.taxibooking.model.NotificationDriver;
 import com.example.taxibooking.repository.NotificationCustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +30,10 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
         final NotificationCustomer notificationCustomer = notificationCustomerRepository.findById(notificationCustomerId).get();
 
         return notificationCustomer;
+    }
+
+    @Override
+    public NotificationDriver sendRequestToDriver(String customerId, NotificationDriver notificationCustomerId) {
+        return null;
     }
 }

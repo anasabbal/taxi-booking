@@ -29,4 +29,7 @@ public class NotificationCustomer {
     public void linkToDriverNotification(Driver driver){
         this.drivers.add(driver);
     }
+    public void removeDriverForm(Driver driver){
+        this.drivers.remove(driver);
+    }
 }
