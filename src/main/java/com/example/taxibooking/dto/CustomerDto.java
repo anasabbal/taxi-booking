@@ -4,6 +4,7 @@ package com.example.taxibooking.dto;
 
 import com.example.taxibooking.enums.Gender;
 import com.example.taxibooking.enums.UserType;
+import com.example.taxibooking.model.Driver;
 import lombok.Getter;
 import lombok.Setter;
 

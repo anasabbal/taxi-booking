@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 @Setter
 @EntityListeners(value = AuditingEntityListener.class)
 public class AbstractEntity {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

@@ -28,9 +28,6 @@ public class Customer extends AbstractEntity{
     private Gender gender;
 
     @OneToOne
-    private Booking activeBooking = null;
-
-    @OneToOne
     private ExactLocation home;
     @OneToOne
     private ExactLocation work;
@@ -51,6 +48,18 @@ public class Customer extends AbstractEntity{
         customer.driver = driver;
 
         return customer;
+    }
+    public void linkToDriver(Driver driver){
+        this.driver = driver;
+    }
+    public void linkToHomeLocation(ExactLocation home){
+        this.home = home;
+    }
+    public void linkToWorkLocation(ExactLocation work){
+        this.work = work;
+    }
+    public void linkToLastLocation(ExactLocation lastKnownLocation){
+        this.lastKnownLocation = lastKnownLocation;
     }
     public void update(final CustomerCommand customerCommand){
 

@@ -8,13 +8,12 @@ import javax.persistence.*;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExactLocation extends AbstractEntity{
     private Double latitude;
     private Double longitude;
 
-    public ExactLocation() {
-
-    }
 
     public static ExactLocation createLocation(final LocationCommand locationCommand){
         final ExactLocation exactLocation = new ExactLocation();
