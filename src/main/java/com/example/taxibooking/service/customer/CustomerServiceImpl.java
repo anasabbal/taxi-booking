@@ -8,7 +8,9 @@ import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.model.*;
 import com.example.taxibooking.repository.CustomerRepository;
+import com.example.taxibooking.repository.DriverRepository;
 import com.example.taxibooking.repository.NotificationCustomerRepository;
+import com.example.taxibooking.repository.NotificationDriverRepository;
 import com.example.taxibooking.service.driver.DriverService;
 import com.example.taxibooking.service.location.LocationService;
 import com.example.taxibooking.util.JSONUtil;
@@ -27,10 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final LocationService locationService;
     private final DriverService driverService;
-
-    private final CustomerMapper customerMapper;
-
     private final NotificationCustomerRepository notificationCustomerRepository;
+    private final NotificationDriverRepository notificationDriverRepository;
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -114,9 +114,14 @@ public class CustomerServiceImpl implements CustomerService {
         notificationCustomer.linkToDriverNotification(driver);
         notificationCustomerRepository.save(notificationCustomer);
 
+        NotificationDriver notificationDriver = new NotificationDriver();
+        notificationDriver.linkToCustomer(customer);
+        notificationDriverRepository.save(notificationDriver);
+
+
         customer.linkToNotification(notificationCustomer);
+        driver.linkToNotificationDriver(notificationDriver);
         //driver.getNotificationDriver().linkToCustomer(customer);
-        //customer.getNotificationCustomer().linkToDriverNotification(driver);
 
         return customerRepository.save(customer);
     }

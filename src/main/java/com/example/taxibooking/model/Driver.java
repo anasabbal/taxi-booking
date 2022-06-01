@@ -70,4 +70,7 @@ public class Driver extends AbstractEntity{
     public void linkToHomeLocation(ExactLocation home){
         this.home = home;
     }
+    public void linkToNotificationDriver(NotificationDriver notificationDriver){
+        this.notificationDriver = notificationDriver;
+    }
 }

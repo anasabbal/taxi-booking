@@ -17,7 +17,7 @@ public class CustomerCommand {
     private String firstName;
     private String email;
     private String phone;
-    private String password;
+    //private String password;
     private UserType role;
     private Gender gender;
     private String home;

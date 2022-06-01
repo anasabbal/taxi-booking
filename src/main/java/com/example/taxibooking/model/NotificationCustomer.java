@@ -1,6 +1,7 @@
 package com.example.taxibooking.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class NotificationCustomer {
 
     @OneToMany
     @JoinColumn
+    @JsonIgnore
     private Set<Driver> drivers = new HashSet<>();
 
     public void linkToDriverNotification(Driver driver){

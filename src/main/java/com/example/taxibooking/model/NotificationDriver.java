@@ -1,6 +1,7 @@
 package com.example.taxibooking.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,10 @@ public class NotificationDriver {
     )
     private String id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @JoinColumn
-    private Set<Customer> customers;
+    @JsonIgnore
+    private Set<Customer> customers = new HashSet<>();
 
 
     public void linkToCustomer(Customer customer){

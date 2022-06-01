@@ -33,7 +33,6 @@ public class DriverServiceImpl implements DriverService{
     private final DriverRepository driverRepository;
     private final LocationService locationService;
     private final DriverMapper driverMapper;
-    private final CustomerMapper customerMapper;
 
     @Override
     public Page<DriverDto> getAllDriver(Pageable pageable) {

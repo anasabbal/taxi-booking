@@ -20,5 +20,5 @@ public class DriverDto {
     private LocationDto lastKnownLocation;
     private LocationDto home;
     private Boolean isAvailable;
-    private NotificationDriver notificationDriver;
+    private NotificationDriverDto notificationDriver;
 }

@@ -70,6 +70,7 @@ public class Customer extends AbstractEntity{
         this.lastKnownLocation = lastKnownLocation;
     }
     public void update(final CustomerCommand customerCommand){
-
+        this.firstName = customerCommand.getFirstName();
+        this.email = customerCommand.getEmail();
     }
 }

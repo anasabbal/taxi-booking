@@ -9,6 +9,7 @@ import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
+import okhttp3.internal.connection.RealConnectionPool;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -69,8 +70,16 @@ public class CustomerController {
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
     @PostMapping("/request/driver/{driverId}/{customerId}")
-    public ResponseEntity<CustomerDto> requestDriver(@PathVariable("customerId")final String customerId, @PathVariable("driverId") String driverId){
+    public ResponseEntity<CustomerDto> requestDriver(@PathVariable("customerId")final String customerId,
+                                                     @PathVariable("driverId") String driverId){
         final Customer customer = customerService.requestDriver(driverId, customerId);
+
+        return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
+    }
+    @DeleteMapping("/cancel/driver/{driverId}/{customerId}")
+    public ResponseEntity<CustomerDto> cancelRequest(@PathVariable("customerId")final String customerId,
+                                                     @PathVariable("driverId") String driverId){
+        final Customer customer = customerService.cancelRequest(driverId, customerId);
 
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
