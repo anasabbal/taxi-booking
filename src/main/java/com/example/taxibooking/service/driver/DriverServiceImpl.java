@@ -81,14 +81,26 @@ public class DriverServiceImpl implements DriverService{
     }
 
     @Override
-    public Page<CustomerDto> getAllRequestCustomers(String driverId) {
+    public Page<Customer> getAllRequestCustomers(String driverId) {
         log.info("Begin fetch Driver with id {}", driverId);
         final Driver driver = findDriverById(driverId);
         final Set<Customer> customer = driver.getNotificationDriver().getCustomers();
 
         Page<Customer> customers = new PageImpl<>(new ArrayList<>(customer));
 
-        return customers.map(customerMapper::toCustomerDto);
+        return customers;
+    }
+    @Override
+    public Page<Customer> cancelCustomerIdRequest(String driverId, String customerId){
+        Page<Customer> customers = getAllRequestCustomers(driverId);
+        Set<Customer> customers1 = customers.toSet();
+
+        for(Customer customer: customers1){
+            if(customer.getId().equals(customerId))
+                customers1.remove(customer);
+        }
+        customers = new PageImpl<>(new ArrayList<>(customers1));
+        return customers;
     }
 
     @Override

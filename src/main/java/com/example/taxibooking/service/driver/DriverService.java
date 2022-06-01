@@ -17,6 +17,7 @@ public interface DriverService {
     Driver updateDriverLocation(String driverId, LocationCommand location);
     public Driver addLastLocationToDriver(String driverId, LocationCommand locationCommand);
     public Driver addHomeLocationToDriver(String driverId, LocationCommand locationCommand);
-    Page<CustomerDto> getAllRequestCustomers(String driverId);
+    Page<Customer> getAllRequestCustomers(String driverId);
+    Page<Customer> cancelCustomerIdRequest(String driverId, String customerId);
 
 }

@@ -22,7 +22,7 @@ public class Driver extends AbstractEntity{
     @Enumerated(EnumType.STRING)
     private DriverStatus status = DriverStatus.DENIED;
     @Enumerated(EnumType.STRING)
-    private DriverType driverType;
+    private DriverType driverType = DriverType.TAXI;
 
     @Enumerated(EnumType.STRING)
     private Rating rating;

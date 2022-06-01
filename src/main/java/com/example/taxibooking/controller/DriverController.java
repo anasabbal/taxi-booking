@@ -5,7 +5,9 @@ import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.dto.DriverDto;
+import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.mapper.DriverMapper;
+import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.service.driver.DriverService;
 import lombok.Getter;
@@ -23,6 +25,7 @@ import javax.print.DocFlavor;
 public class DriverController {
     private final DriverService driverService;
     private final DriverMapper driverMapper;
+    private final CustomerMapper customerMapper;
 
 
     @GetMapping("/all")
@@ -63,6 +66,14 @@ public class DriverController {
     }
     @GetMapping("/request/customers/{driverId}")
     public ResponseEntity<Page<CustomerDto>> getAllRequestCustomer(@PathVariable("driverId") final String driverId){
-        return ResponseEntity.ok(driverService.getAllRequestCustomers(driverId));
+        Page<Customer> customers = driverService.getAllRequestCustomers(driverId);
+        return ResponseEntity.ok(customers.map(customerMapper::toCustomerDto));
+    }
+    @PostMapping("/cancel/request/{driverId}/{customerId}")
+    public ResponseEntity<Page<CustomerDto>> cancelRequest(@PathVariable("driverId") final String driverId,
+                                                           @PathVariable("customerId") final String customerId){
+        Page<Customer> customers = driverService.cancelCustomerIdRequest(driverId, customerId);
+
+        return ResponseEntity.ok(customers.map(customerMapper::toCustomerDto));
     }
 }

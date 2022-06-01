@@ -6,11 +6,9 @@ import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.mapper.CustomerMapper;
-import com.example.taxibooking.model.Customer;
-import com.example.taxibooking.model.Driver;
-import com.example.taxibooking.model.ExactLocation;
-import com.example.taxibooking.model.NotificationDriver;
+import com.example.taxibooking.model.*;
 import com.example.taxibooking.repository.CustomerRepository;
+import com.example.taxibooking.repository.NotificationCustomerRepository;
 import com.example.taxibooking.service.driver.DriverService;
 import com.example.taxibooking.service.location.LocationService;
 import com.example.taxibooking.util.JSONUtil;
@@ -31,6 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final DriverService driverService;
 
     private final CustomerMapper customerMapper;
+
+    private final NotificationCustomerRepository notificationCustomerRepository;
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -110,14 +110,24 @@ public class CustomerServiceImpl implements CustomerService {
         final Customer customer = findById(customerId);
         final Driver driver = driverService.findDriverById(driverId);
 
-        driver.getNotificationDriver().linkToCustomer(customer);
-        customer.getNotificationCustomer().linkToDriverNotification(driver);
+        NotificationCustomer notificationCustomer = new NotificationCustomer();
+        notificationCustomer.linkToDriverNotification(driver);
+        notificationCustomerRepository.save(notificationCustomer);
 
+        customer.linkToNotification(notificationCustomer);
+        //driver.getNotificationDriver().linkToCustomer(customer);
+        //customer.getNotificationCustomer().linkToDriverNotification(driver);
 
-        if(driver.getIsAvailable()){
-            customer.linkToDriver(driver);
-            driver.setStatus(DriverStatus.IN_ROAD);
-        }
+        return customerRepository.save(customer);
+    }
+    @Override
+    public Customer cancelRequest(String driverId, String customerId){
+        final Customer customer = findById(customerId);
+        final Driver driver = driverService.findDriverById(driverId);
+
+        customer.getNotificationCustomer().removeDriverForm(driver);
+        driver.getNotificationDriver().removeFrom(customer);
+
         return customerRepository.save(customer);
     }
 }

@@ -2,6 +2,7 @@ package com.example.taxibooking.dto;
 
 
 import com.example.taxibooking.enums.Rating;
+import com.example.taxibooking.model.NotificationDriver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +20,5 @@ public class DriverDto {
     private LocationDto lastKnownLocation;
     private LocationDto home;
     private Boolean isAvailable;
+    private NotificationDriver notificationDriver;
 }

@@ -68,8 +68,10 @@ public class CustomerController {
         final Customer customer = customerService.updateCustomerLocation(customerId, locationCommand);
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
-    @PostMapping("/{customerId}")
-    public ResponseEntity<CustomerDto> requestDriver(@PathVariable("customerId")final String customerId, Driver driver){
-        return null;
+    @PostMapping("/request/driver/{driverId}/{customerId}")
+    public ResponseEntity<CustomerDto> requestDriver(@PathVariable("customerId")final String customerId, @PathVariable("driverId") String driverId){
+        final Customer customer = customerService.requestDriver(driverId, customerId);
+
+        return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
 }

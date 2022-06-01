@@ -5,6 +5,7 @@ package com.example.taxibooking.dto;
 import com.example.taxibooking.enums.Gender;
 import com.example.taxibooking.enums.UserType;
 import com.example.taxibooking.model.Driver;
+import com.example.taxibooking.model.NotificationCustomer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +22,5 @@ public class CustomerDto {
     private LocationDto work;
     private LocationDto lastLocation;
     private DriverDto driverDto;
+    private NotificationCustomerDto notificationCustomer;
 }

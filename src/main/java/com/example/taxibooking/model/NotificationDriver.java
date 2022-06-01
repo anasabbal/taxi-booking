@@ -28,7 +28,7 @@ public class NotificationDriver {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
-    private Set<Customer> customers = new HashSet<>();
+    private Set<Customer> customers;
 
 
     public void linkToCustomer(Customer customer){

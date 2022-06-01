@@ -54,6 +54,9 @@ public class Customer extends AbstractEntity{
 
         return customer;
     }
+    public void linkToNotification(NotificationCustomer notificationCustomer){
+        this.notificationCustomer  = notificationCustomer;
+    }
     public void linkToDriver(Driver driver){
         this.driver = driver;
     }

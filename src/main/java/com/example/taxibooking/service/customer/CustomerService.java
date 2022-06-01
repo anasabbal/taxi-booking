@@ -22,4 +22,6 @@ public interface CustomerService {
     Customer addWorkLocation(String customerId, final LocationCommand locationCommand);
 
     Customer addLastLocation(String customerId, final LocationCommand locationCommand);
+
+    Customer cancelRequest(String driverId, String customerId);
 }
