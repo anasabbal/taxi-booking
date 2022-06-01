@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,8 +26,9 @@ public class NotificationDriver {
     )
     private String id;
 
-    @OneToMany
-    private Set<Customer> customers;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn
+    private Set<Customer> customers = new HashSet<>();
 
 
     public void linkToCustomer(Customer customer){

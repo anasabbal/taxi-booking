@@ -2,18 +2,20 @@ package com.example.taxibooking.model;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class NotificationCustomer {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,7 +26,8 @@ public class NotificationCustomer {
     private String id;
 
     @OneToMany
-    private Set<Driver> drivers;
+    @JoinColumn
+    private Set<Driver> drivers = new HashSet<>();
 
     public void linkToDriverNotification(Driver driver){
         this.drivers.add(driver);

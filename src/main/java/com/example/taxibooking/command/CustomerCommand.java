@@ -15,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CustomerCommand {
     private String firstName;
-    private String lastName;
     private String email;
     private String phone;
     private String password;

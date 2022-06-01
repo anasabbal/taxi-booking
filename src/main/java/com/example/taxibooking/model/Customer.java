@@ -23,7 +23,7 @@ public class Customer extends AbstractEntity{
     private String firstName;
     private String email;
     private String phone;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Driver driver;
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -35,7 +35,7 @@ public class Customer extends AbstractEntity{
     @OneToOne
     private ExactLocation lastKnownLocation;
 
-    @OneToOne
+    @ManyToOne
     private NotificationCustomer notificationCustomer;
 
     public static Customer createUser(final CustomerCommand customerCommand,

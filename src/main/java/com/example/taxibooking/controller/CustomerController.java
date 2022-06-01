@@ -6,6 +6,7 @@ import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.model.Customer;
+import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -66,5 +67,9 @@ public class CustomerController {
 
         final Customer customer = customerService.updateCustomerLocation(customerId, locationCommand);
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
+    }
+    @PostMapping("/{customerId}")
+    public ResponseEntity<CustomerDto> requestDriver(@PathVariable("customerId")final String customerId, Driver driver){
+        return null;
     }
 }

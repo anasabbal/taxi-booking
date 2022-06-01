@@ -32,7 +32,7 @@ public class Driver extends AbstractEntity{
     private ExactLocation home;
     private Boolean isAvailable;
 
-    @OneToOne
+    @ManyToOne
     private NotificationDriver notificationDriver;
 
     public Driver(){

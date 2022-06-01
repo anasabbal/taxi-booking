@@ -3,9 +3,11 @@ package com.example.taxibooking.service.driver;
 
 import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.command.LocationCommand;
+import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.dto.DriverDto;
 import com.example.taxibooking.exception.BusinessException;
 import com.example.taxibooking.exception.ExceptionPayloadFactory;
+import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.mapper.DriverMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
@@ -17,8 +19,12 @@ import com.example.taxibooking.util.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -27,6 +33,7 @@ public class DriverServiceImpl implements DriverService{
     private final DriverRepository driverRepository;
     private final LocationService locationService;
     private final DriverMapper driverMapper;
+    private final CustomerMapper customerMapper;
 
     @Override
     public Page<DriverDto> getAllDriver(Pageable pageable) {
@@ -63,7 +70,30 @@ public class DriverServiceImpl implements DriverService{
         return driverRepository.save(driver);
     }
     @Override
+    public Driver addHomeLocationToDriver(String driverId, LocationCommand locationCommand){
+        final ExactLocation home = locationService.createLocation(locationCommand);
+
+        final Driver driver = findDriverById(driverId);
+        driver.linkToHomeLocation(home);
+        log.info("creating and adding lastLocation with payload {} to driver with id {}", JSONUtil.toJSON(locationCommand), driverId);
+
+        return driverRepository.save(driver);
+    }
+
+    @Override
+    public Page<CustomerDto> getAllRequestCustomers(String driverId) {
+        log.info("Begin fetch Driver with id {}", driverId);
+        final Driver driver = findDriverById(driverId);
+        final Set<Customer> customer = driver.getNotificationDriver().getCustomers();
+
+        Page<Customer> customers = new PageImpl<>(new ArrayList<>(customer));
+
+        return customers.map(customerMapper::toCustomerDto);
+    }
+
+    @Override
     public Driver updateDriverLocation(String driverId, LocationCommand location) {
+        log.info("Fetch driver with id {}", driverId);
         final Driver driver = findDriverById(driverId);
 
         ExactLocation exactLocation = ExactLocation.builder().longitude(location.getLongitude())
