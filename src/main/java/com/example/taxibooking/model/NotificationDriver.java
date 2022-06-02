@@ -18,7 +18,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class NotificationDriver {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -28,7 +27,6 @@ public class NotificationDriver {
     private String id;
 
     @OneToMany
-    @JoinColumn
     @JsonIgnore
     private Set<Customer> customers = new HashSet<>();
 

@@ -1,6 +1,8 @@
 package com.example.taxibooking.service.notification.customerNotif;
 
 
+import com.example.taxibooking.dto.NotificationCustomerDto;
+import com.example.taxibooking.mapper.NotificationCustomerMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.NotificationCustomer;
@@ -18,11 +20,13 @@ import org.springframework.stereotype.Service;
 public class CustomerNotificationServiceImpl implements CustomerNotificationService{
 
     private final NotificationCustomerRepository notificationCustomerRepository;
+    private final NotificationCustomerMapper notificationCustomerMapper;
 
 
     @Override
-    public Page<NotificationCustomer> getAllNotificationCustomer(Pageable pageable) {
-        return notificationCustomerRepository.findAll(pageable);
+    public Page<NotificationCustomerDto> getAllNotificationCustomer(Pageable pageable) {
+        Page<NotificationCustomer> notificationCustomers = notificationCustomerRepository.findAll(pageable);
+        return notificationCustomers.map(notificationCustomerMapper::toNotificationCustomerDto);
     }
 
     @Override

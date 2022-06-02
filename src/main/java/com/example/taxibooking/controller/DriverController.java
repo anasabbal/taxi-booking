@@ -76,4 +76,11 @@ public class DriverController {
 
         return ResponseEntity.ok(customers.map(customerMapper::toCustomerDto));
     }
+    @PostMapping("/accept/request/{driverId}/{customerId}")
+    public ResponseEntity<DriverDto> acceptRequest(@PathVariable("driverId") final String driverId,
+                                                   @PathVariable("customerId") final String customerId){
+        final Driver driver = driverService.acceptRequest(driverId, customerId);
+
+        return ResponseEntity.ok(driverMapper.toDriverDto(driver));
+    }
 }

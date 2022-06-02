@@ -12,8 +12,11 @@ import com.example.taxibooking.mapper.DriverMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.ExactLocation;
+import com.example.taxibooking.model.NotificationDriver;
+import com.example.taxibooking.repository.CustomerRepository;
 import com.example.taxibooking.repository.DriverRepository;
 import com.example.taxibooking.repository.LocationRepository;
+import com.example.taxibooking.service.customer.CustomerService;
 import com.example.taxibooking.service.location.LocationService;
 import com.example.taxibooking.util.JSONUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ public class DriverServiceImpl implements DriverService{
     private final DriverRepository driverRepository;
     private final LocationService locationService;
     private final DriverMapper driverMapper;
+    private final CustomerRepository customerRepository;
 
     @Override
     public Page<DriverDto> getAllDriver(Pageable pageable) {
@@ -101,7 +105,6 @@ public class DriverServiceImpl implements DriverService{
         customers = new PageImpl<>(new ArrayList<>(customers1));
         return customers;
     }
-
     @Override
     public Driver updateDriverLocation(String driverId, LocationCommand location) {
         log.info("Fetch driver with id {}", driverId);
@@ -111,6 +114,18 @@ public class DriverServiceImpl implements DriverService{
                 .latitude(location.getLatitude())
                 .build();
         driver.setLastKnownLocation(exactLocation);
+        return driverRepository.save(driver);
+    }
+    @Override
+    public Driver acceptRequest(String driverId, String customerId){
+        final Customer customer = customerRepository.findById(customerId).get();
+        final Driver driver = findDriverById(driverId);
+
+        customer.linkToDriver(driver);
+
+        final NotificationDriver notificationDriver = driver.getNotificationDriver();
+        notificationDriver.removeFrom(customer);
+
         return driverRepository.save(driver);
     }
 }

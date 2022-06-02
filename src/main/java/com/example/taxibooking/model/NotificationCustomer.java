@@ -27,7 +27,6 @@ public class NotificationCustomer {
     private String id;
 
     @OneToMany
-    @JoinColumn
     @JsonIgnore
     private Set<Driver> drivers = new HashSet<>();
 

@@ -33,6 +33,7 @@ public class Driver extends AbstractEntity{
     private Boolean isAvailable;
 
     @ManyToOne
+    @JoinColumn(name = "notification_driver")
     private NotificationDriver notificationDriver;
 
     public Driver(){

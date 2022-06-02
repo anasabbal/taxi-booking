@@ -1,5 +1,6 @@
 package com.example.taxibooking.service.notification.customerNotif;
 
+import com.example.taxibooking.dto.NotificationCustomerDto;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.NotificationCustomer;
@@ -9,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomerNotificationService {
 
-    Page<NotificationCustomer> getAllNotificationCustomer(Pageable pageable);
+    Page<NotificationCustomerDto> getAllNotificationCustomer(Pageable pageable);
 
     NotificationCustomer findNotificationCustomerById(String notificationCustomerId);
 

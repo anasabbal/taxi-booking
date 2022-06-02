@@ -22,5 +22,5 @@ public class CustomerDto {
     private LocationDto work;
     private LocationDto lastLocation;
     private DriverDto driverDto;
-    private NotificationCustomerDto notificationCustomerDto;
+    //private NotificationCustomerDto notificationCustomerDto;
 }

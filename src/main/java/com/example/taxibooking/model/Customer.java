@@ -36,6 +36,7 @@ public class Customer extends AbstractEntity{
     private ExactLocation lastKnownLocation;
 
     @ManyToOne
+    @JoinColumn(name = "notification_customer")
     private NotificationCustomer notificationCustomer;
 
     public static Customer createUser(final CustomerCommand customerCommand,

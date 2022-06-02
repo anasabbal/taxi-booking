@@ -1,5 +1,6 @@
 package com.example.taxibooking.controller;
 
+import com.example.taxibooking.dto.NotificationCustomerDto;
 import com.example.taxibooking.model.NotificationCustomer;
 import com.example.taxibooking.service.notification.customerNotif.CustomerNotificationService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class NotificationCustomerController {
     private final CustomerNotificationService customerNotificationService;
 
     @GetMapping("/customers/notification")
-    public ResponseEntity<Page<NotificationCustomer>> getAllNotificationsCustomer(Pageable pageable){
+    public ResponseEntity<Page<NotificationCustomerDto>> getAllNotificationsCustomer(Pageable pageable){
         return ResponseEntity.ok(customerNotificationService.getAllNotificationCustomer(pageable));
     }
     @GetMapping("/customers/notification/{customerId}")

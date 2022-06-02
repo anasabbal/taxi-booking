@@ -13,6 +13,7 @@ import com.example.taxibooking.repository.NotificationCustomerRepository;
 import com.example.taxibooking.repository.NotificationDriverRepository;
 import com.example.taxibooking.service.driver.DriverService;
 import com.example.taxibooking.service.location.LocationService;
+import com.example.taxibooking.service.notification.customerNotif.CustomerNotificationService;
 import com.example.taxibooking.util.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final LocationService locationService;
     private final DriverService driverService;
-    private final NotificationCustomerRepository notificationCustomerRepository;
+    /*private final NotificationCustomerRepository notificationCustomerRepository;
     private final NotificationDriverRepository notificationDriverRepository;
+
+    private final CustomerNotificationService customerNotificationService;*/
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -110,18 +113,14 @@ public class CustomerServiceImpl implements CustomerService {
         final Customer customer = findById(customerId);
         final Driver driver = driverService.findDriverById(driverId);
 
-        NotificationCustomer notificationCustomer = new NotificationCustomer();
+        /*NotificationCustomer notificationCustomer = new NotificationCustomer();
         notificationCustomer.linkToDriverNotification(driver);
-        notificationCustomerRepository.save(notificationCustomer);
-
-        NotificationDriver notificationDriver = new NotificationDriver();
+        notificationCustomerRepository.save(notificationCustomer);*/
+        final NotificationDriver notificationDriver = driver.getNotificationDriver();
         notificationDriver.linkToCustomer(customer);
-        notificationDriverRepository.save(notificationDriver);
 
-
-        customer.linkToNotification(notificationCustomer);
-        driver.linkToNotificationDriver(notificationDriver);
-        //driver.getNotificationDriver().linkToCustomer(customer);
+        //final NotificationCustomer notificationCustomer = customer.getNotificationCustomer();
+        //notificationCustomer.linkToDriverNotification(driver);
 
         return customerRepository.save(customer);
     }
@@ -130,8 +129,9 @@ public class CustomerServiceImpl implements CustomerService {
         final Customer customer = findById(customerId);
         final Driver driver = driverService.findDriverById(driverId);
 
-        customer.getNotificationCustomer().removeDriverForm(driver);
-        driver.getNotificationDriver().removeFrom(customer);
+        //customer.getNotificationCustomer().removeDriverForm(driver);
+        final NotificationDriver notificationDriver = driver.getNotificationDriver();
+        notificationDriver.removeFrom(customer);
 
         return customerRepository.save(customer);
     }
