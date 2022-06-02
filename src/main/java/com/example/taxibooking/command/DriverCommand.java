@@ -13,9 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class DriverCommand {
-    private DriverStatus status;
-    private DriverType driverType;
     private String lastLocation;
     private String direction;
-    private Boolean isAvailable;
 }

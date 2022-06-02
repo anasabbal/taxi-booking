@@ -5,7 +5,10 @@ import com.example.taxibooking.command.CustomerCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.enums.DriverStatus;
+import com.example.taxibooking.exception.BusinessException;
+import com.example.taxibooking.exception.ExceptionPayloadFactory;
 import com.example.taxibooking.mapper.CustomerMapper;
+import com.example.taxibooking.mapper.NotificationCustomerMapper;
 import com.example.taxibooking.model.*;
 import com.example.taxibooking.repository.CustomerRepository;
 import com.example.taxibooking.repository.DriverRepository;
@@ -29,11 +32,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
     private final LocationService locationService;
-    private final DriverService driverService;
-    /*private final NotificationCustomerRepository notificationCustomerRepository;
+    private final DriverRepository driverRepository;
     private final NotificationDriverRepository notificationDriverRepository;
-
-    private final CustomerNotificationService customerNotificationService;*/
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -47,7 +47,11 @@ public class CustomerServiceImpl implements CustomerService {
         final ExactLocation home = customerCommand.getHome() == null ? null : locationService.findById(customerCommand.getHome());
         final ExactLocation work = customerCommand.getWork() == null ? null : locationService.findById(customerCommand.getWork());
         final ExactLocation lastKnownLocation = customerCommand.getLastLocation() == null ? null : locationService.findById(customerCommand.getLastLocation());
-        final Driver driver = customerCommand.getDriverCommand() == null ? null : driverService.findDriverById(customerCommand.getDriverCommand());
+        //final Driver driver = customerCommand.getDriverCommand() == null ? null : driverService.findDriverById(customerCommand.getDriverCommand());
+
+        final Driver driver = customerCommand.getDriverCommand() == null ? null :
+                driverRepository.findById(customerCommand.getDriverCommand())
+                        .orElseThrow(() -> new BusinessException(ExceptionPayloadFactory.DRIVER_NOT_FOUND.get()));
 
         final Customer customer = customerRepository.save(Customer.createUser(customerCommand, home, work, lastKnownLocation, driver));
 
@@ -111,23 +115,31 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer requestDriver(String driverId, String customerId) {
         final Customer customer = findById(customerId);
-        final Driver driver = driverService.findDriverById(driverId);
+        final Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new BusinessException(ExceptionPayloadFactory.DRIVER_NOT_FOUND.get()));
 
-        /*NotificationCustomer notificationCustomer = new NotificationCustomer();
-        notificationCustomer.linkToDriverNotification(driver);
-        notificationCustomerRepository.save(notificationCustomer);*/
-        final NotificationDriver notificationDriver = driver.getNotificationDriver();
-        notificationDriver.linkToCustomer(customer);
-
-        //final NotificationCustomer notificationCustomer = customer.getNotificationCustomer();
-        //notificationCustomer.linkToDriverNotification(driver);
-
+        if(driver.getNotificationDriver() == null){
+            final NotificationDriver notificationDriver = new NotificationDriver();
+            log.info("Notification Driver with payload {}", JSONUtil.toJSON(notificationDriver));
+            notificationDriver.linkToCustomer(customer);
+            driver.linkToNotificationDriver(notificationDriver);
+            driverRepository.save(driver);
+            notificationDriverRepository.save(notificationDriver);
+        }else {
+            final NotificationDriver notificationDriver = driver.getNotificationDriver();
+            notificationDriver.linkToCustomer(customer);
+            driver.linkToNotificationDriver(notificationDriver);
+            driverRepository.save(driver);
+            log.info("driver with payload {}", JSONUtil.toJSON(driver));
+            notificationDriverRepository.save(notificationDriver);
+        }
         return customerRepository.save(customer);
     }
     @Override
     public Customer cancelRequest(String driverId, String customerId){
         final Customer customer = findById(customerId);
-        final Driver driver = driverService.findDriverById(driverId);
+        final Driver driver =driverRepository.findById(driverId)
+                .orElseThrow(() -> new BusinessException(ExceptionPayloadFactory.DRIVER_NOT_FOUND.get()));
 
         //customer.getNotificationCustomer().removeDriverForm(driver);
         final NotificationDriver notificationDriver = driver.getNotificationDriver();

@@ -1,6 +1,8 @@
 package com.example.taxibooking.service.notification.driverNotif;
 
 
+import com.example.taxibooking.dto.NotificationDriverDto;
+import com.example.taxibooking.mapper.NotificationDriverMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.NotificationDriver;
@@ -21,10 +23,12 @@ public class DriverNotificationServiceImpl implements DriverNotificationService{
 
     private final NotificationDriverRepository notificationDriverRepository;
     private final DriverService driverService;
+    private final NotificationDriverMapper notificationDriverMapper;
 
     @Override
-    public Page<NotificationDriver> getAllNotificationDriver(Pageable pageable) {
-        return notificationDriverRepository.findAll(pageable);
+    public Page<NotificationDriverDto> getAllNotificationDriver(Pageable pageable) {
+        Page<NotificationDriver> notificationDrivers = notificationDriverRepository.findAll(pageable);
+        return notificationDrivers.map(notificationDriverMapper::toNotificationDriverDto);
     }
 
     @Override

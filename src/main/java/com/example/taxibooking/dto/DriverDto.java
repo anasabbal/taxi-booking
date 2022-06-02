@@ -15,10 +15,11 @@ import java.util.Set;
 public class DriverDto {
     private String id;
     private String status;
+    private String driverApproveStatus;
     private String driverType;
     private String rating;
     private LocationDto lastKnownLocation;
     private LocationDto home;
     private Boolean isAvailable;
-    private NotificationDriverDto notificationDriver;
+    //private NotificationDriverDto notificationDriver;
 }

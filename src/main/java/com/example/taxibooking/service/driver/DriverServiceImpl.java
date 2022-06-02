@@ -9,13 +9,11 @@ import com.example.taxibooking.exception.BusinessException;
 import com.example.taxibooking.exception.ExceptionPayloadFactory;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.mapper.DriverMapper;
-import com.example.taxibooking.model.Customer;
-import com.example.taxibooking.model.Driver;
-import com.example.taxibooking.model.ExactLocation;
-import com.example.taxibooking.model.NotificationDriver;
+import com.example.taxibooking.model.*;
 import com.example.taxibooking.repository.CustomerRepository;
 import com.example.taxibooking.repository.DriverRepository;
 import com.example.taxibooking.repository.LocationRepository;
+import com.example.taxibooking.repository.NotificationCustomerRepository;
 import com.example.taxibooking.service.customer.CustomerService;
 import com.example.taxibooking.service.location.LocationService;
 import com.example.taxibooking.util.JSONUtil;
@@ -36,12 +34,12 @@ public class DriverServiceImpl implements DriverService{
     private final DriverRepository driverRepository;
     private final LocationService locationService;
     private final DriverMapper driverMapper;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+    private final NotificationCustomerRepository notificationCustomerRepository;
 
     @Override
     public Page<DriverDto> getAllDriver(Pageable pageable) {
         Page<Driver> drivers = driverRepository.findAll(pageable);
-
         return drivers.map(driverMapper::toDriverDto);
     }
 
@@ -118,14 +116,20 @@ public class DriverServiceImpl implements DriverService{
     }
     @Override
     public Driver acceptRequest(String driverId, String customerId){
-        final Customer customer = customerRepository.findById(customerId).get();
+        final Customer customer = customerService.findById(customerId);
         final Driver driver = findDriverById(driverId);
 
+        final NotificationCustomer notificationCustomer;
+        if(customer.getNotificationCustomer() == null){
+            notificationCustomer = new NotificationCustomer();
+        }else{
+            notificationCustomer = customer.getNotificationCustomer();
+        }
+        notificationCustomer.linkToDriverNotification(driver);
+        notificationCustomerRepository.save(notificationCustomer);
         customer.linkToDriver(driver);
-
-        final NotificationDriver notificationDriver = driver.getNotificationDriver();
-        notificationDriver.removeFrom(customer);
 
         return driverRepository.save(driver);
     }
+
 }

@@ -2,56 +2,153 @@
 - Driver can create account
 - Client or passenger can 
 
-## Driver
+## Create Driver
 
 ``` json
 {
-            "id": "1ba9fe95-23b9-4ac2-b23b-07ad34818917",
-            "status": null,
-            "driverType": null,
-            "rating": null,
-            
-            "lastKnownLocation": {
-                "id": "b958b293-cdf4-4006-bbe7-4c0fb1eb20f4",
-                "latitude": 7777.0,
-                "longitude": 8888.0
-            },
-            
-            "home": {
-                "id": "07be5428-2eb4-483b-b326-a3679b5386d4",
-                "latitude": 7777.0,
-                "longitude": 8888.0
-            },
-            "isAvailable": null,
-            
-            "notificationDriver": {
-                "id": "d27101d7-58c0-43d2-8d31-3902a1a2baa7",
-                "customers": [
-                    {
-                        "id": "0b159d0a-834d-4383-b50d-e6b65cbe2f85",
-                        "firstName": "new",
-                        "email": "new.abbal10@gmail.com",
-                        "phone": "0766539731",
-                        "role": null,
-                        "gender": "MALE",
-                        "home": null,
-                        "work": null,
-                        "lastLocation": null,
-                        "driverDto": null
+    "id": "f5e82bc8-1011-4eef-8ec9-46fdcb481530",
+    "status": "DENIED",
+    "driverApproveStatus": "SCHEDULED",
+    "driverType": "TAXI",
+    "rating": null,
+    
+    "lastKnownLocation": {
+        "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+        "latitude": 2222.0,
+        "longitude": 2222.0
+    },
+    
+    "home": {
+        "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+        "latitude": 2222.0,
+        "longitude": 2222.0
+    },
+    
+    "isAvailable": null
+}
+```
+## Create Client
+``` json
+{
+    "id": "44db37ae-4d8d-4fc9-901f-a9568df1bc37",
+    "firstName": "anas",
+    "email": "anas.abbal10@gmail.com",
+    "phone": "0766539731",
+    "role": null,
+    "gender": "MALE",
+    "home": {
+        "id": "efd11661-bad7-4022-8138-07eb25338ca0",
+        "latitude": 2222.0,
+        "longitude": 2222.0
+    },
+    "work": {
+        "id": "bfb3f93c-54d3-4dae-97b2-216f15ad2ed9",
+        "latitude": 2222.0,
+        "longitude": 2222.0
+    },
+    "driverDto": null
+}
+```
+## Send Request to driver => NotificationDriver
+``` json
+{
+            "id": "9c9e1c03-a041-4944-a2b7-b385dbddf2e8",
+            "customers": [
+                {
+                    "id": "44db37ae-4d8d-4fc9-901f-a9568df1bc37",
+                    "firstName": "anas",
+                    "phone": "0766539731",
+                    "gender": "MALE",
+                    "home": {
+                        "id": "efd11661-bad7-4022-8138-07eb25338ca0",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
                     },
-                    {
-                        "id": "f355b5f2-321b-4b09-9f6d-4bcdf55ef572",
-                        "firstName": "anas",
-                        "email": "anas.abbal10@gmail.com",
-                        "phone": "0766539731",
-                        "role": null,
-                        "gender": "MALE",
-                        "home": null,
-                        "work": null,
-                        "lastLocation": null,
-                        "driverDto": null
-                    }
-                ]
-            }
+                    "work": {
+                        "id": "bfb3f93c-54d3-4dae-97b2-216f15ad2ed9",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "lastKnownLocation": {
+                        "id": "57ca5c36-b361-4edb-b74b-d29d6aecd894",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "driver": null
+                }
+            ]
         }
 ```
+## Accept request
+``` json
+{
+            "id": "9c9e1c03-a041-4944-a2b7-b385dbddf2e8",
+            "customers": [
+                {
+                    "id": "44db37ae-4d8d-4fc9-901f-a9568df1bc37",
+                    "firstName": "anas",
+                    "phone": "0766539731",
+                    "gender": "MALE",
+                    "home": {
+                        "id": "efd11661-bad7-4022-8138-07eb25338ca0",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "work": {
+                        "id": "bfb3f93c-54d3-4dae-97b2-216f15ad2ed9",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "lastKnownLocation": {
+                        "id": "57ca5c36-b361-4edb-b74b-d29d6aecd894",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "driver": {
+                        "id": "f5e82bc8-1011-4eef-8ec9-46fdcb481530",
+                        "status": "DENIED",
+                        "driverApproveStatus": "SCHEDULED",
+                        "driverType": "TAXI",
+                        "rating": null,
+                        "lastKnownLocation": {
+                            "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+                            "latitude": 2222.0,
+                            "longitude": 2222.0
+                        },
+                        "home": {
+                            "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+                            "latitude": 2222.0,
+                            "longitude": 2222.0
+                        },
+                        "isAvailable": "IN-RIDE"
+                    }
+                }
+            ]
+        }
+``` 
+## Notification Client
+``` json
+{
+            "id": "8a81688f-308b-48fd-adb6-afe4028a04de",
+            "drivers": [
+                {
+                    "id": "f5e82bc8-1011-4eef-8ec9-46fdcb481530",
+                    "status": "DENIED",
+                    "driverApproveStatus": "SCHEDULED",
+                    "driverType": "TAXI",
+                    "rating": null,
+                    "lastKnownLocation": {
+                        "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "home": {
+                        "id": "b92a2661-e551-48cc-8c08-7ebb43c04e64",
+                        "latitude": 2222.0,
+                        "longitude": 2222.0
+                    },
+                    "isAvailable": "IN-RIDE"
+                }
+            ]
+        }
+``` 

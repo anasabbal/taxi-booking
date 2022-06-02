@@ -2,6 +2,7 @@ package com.example.taxibooking.model;
 
 
 import com.example.taxibooking.command.DriverCommand;
+import com.example.taxibooking.enums.DriverApproveStatus;
 import com.example.taxibooking.enums.DriverStatus;
 import com.example.taxibooking.enums.DriverType;
 import com.example.taxibooking.enums.Rating;
@@ -19,6 +20,8 @@ public class Driver extends AbstractEntity{
 
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
+
+    private DriverApproveStatus driverApproveStatus = DriverApproveStatus.SCHEDULED;
     @Enumerated(EnumType.STRING)
     private DriverStatus status = DriverStatus.DENIED;
     @Enumerated(EnumType.STRING)
@@ -32,7 +35,7 @@ public class Driver extends AbstractEntity{
     private ExactLocation home;
     private Boolean isAvailable;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_driver")
     private NotificationDriver notificationDriver;
 
@@ -42,11 +45,11 @@ public class Driver extends AbstractEntity{
     public static Driver createDriver(final DriverCommand driverCommand, final ExactLocation lastLocation, final ExactLocation home){
         final Driver driver = new Driver();
 
-        driver.status = driverCommand.getStatus();
-        driver.driverType = driverCommand.getDriverType();
+        //driver.status = driverCommand.getStatus();
+        //driver.driverType = driverCommand.getDriverType();
         driver.lastKnownLocation = lastLocation;
         driver.home = home;
-        driver.driverType = driverCommand.getDriverType();
+        //driver.driverType = driverCommand.getDriverType();
 
         return driver;
     }
@@ -56,14 +59,6 @@ public class Driver extends AbstractEntity{
         }
         isAvailable = available;
         //return isAvailable;
-    }
-    public void acceptRequest(Customer customer){
-        this.status = DriverStatus.APPROVED;
-        this.notificationDriver.linkToCustomer(customer);
-    }
-    public void cancelRequest(Customer customer){
-        this.status = DriverStatus.DENIED;
-        this.notificationDriver.getCustomers().remove(customer);
     }
     public void linkToLastLocation(ExactLocation lastKnownLocation){
         this.lastKnownLocation = lastKnownLocation;

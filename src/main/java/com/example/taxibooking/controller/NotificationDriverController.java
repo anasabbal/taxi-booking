@@ -23,7 +23,7 @@ public class NotificationDriverController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<Page<NotificationDriver>> getAllNotificationDriver(Pageable pageable){
+    public ResponseEntity<Page<NotificationDriverDto>> getAllNotificationDriver(Pageable pageable){
         return ResponseEntity.ok(driverNotificationService.getAllNotificationDriver(pageable));
     }
     @GetMapping("/{notificationDriverId}")

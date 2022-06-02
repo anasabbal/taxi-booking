@@ -9,18 +9,16 @@ import com.example.taxibooking.model.NotificationCustomer;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.swing.*;
+
 @Getter
 @Setter
 public class CustomerDto {
     private String id;
     private String firstName;
-    private String email;
     private String phone;
-    private UserType role;
     private Gender gender;
     private LocationDto home;
-    private LocationDto work;
-    private LocationDto lastLocation;
-    private DriverDto driverDto;
-    //private NotificationCustomerDto notificationCustomerDto;
+    private LocationDto work, lastKnownLocation;
+    private DriverDto driver;
 }

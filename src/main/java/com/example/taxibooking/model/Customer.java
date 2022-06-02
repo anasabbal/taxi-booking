@@ -23,11 +23,10 @@ public class Customer extends AbstractEntity{
     private String firstName;
     private String email;
     private String phone;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Driver driver;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
     @OneToOne
     private ExactLocation home;
     @OneToOne
@@ -35,7 +34,7 @@ public class Customer extends AbstractEntity{
     @OneToOne
     private ExactLocation lastKnownLocation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_customer")
     private NotificationCustomer notificationCustomer;
 
