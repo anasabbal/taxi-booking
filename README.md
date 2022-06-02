@@ -1,6 +1,14 @@
-### Features
-- Driver can create account
-- Client or passenger can 
+### Features Client
+- Client can send request to driver
+- Client can cancel the request
+- Client can rate(RATING) driver 
+- Client can see all request accepted from Notification
+- Client can clear all notification 
+### Features Driver
+- Driver can accept request from client
+- Driver can cancel request 
+- Driver an see all request accepted from Notification
+- Driver can clear all notification
 
 ## Create Driver
 

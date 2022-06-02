@@ -83,4 +83,8 @@ public class CustomerController {
 
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
+    @PostMapping("/rating/{driverId}")
+    public ResponseEntity<String> addRatingToDriver(@PathVariable("driverId") final String driverId, String rating){
+        return ResponseEntity.ok(customerService.addRating_Driver(driverId, rating));
+    }
 }

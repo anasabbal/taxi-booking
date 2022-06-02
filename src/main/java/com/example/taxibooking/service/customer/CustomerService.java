@@ -3,6 +3,7 @@ package com.example.taxibooking.service.customer;
 import com.example.taxibooking.command.CustomerCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.model.Customer;
+import com.example.taxibooking.model.Driver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,6 @@ public interface CustomerService {
     Customer addWorkLocation(String customerId, final LocationCommand locationCommand);
     Customer addLastLocation(String customerId, final LocationCommand locationCommand);
     Customer cancelRequest(String driverId, String customerId);
+
+    String addRating_Driver(String driverId, String rating);
 }

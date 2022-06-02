@@ -19,6 +19,6 @@ public interface DriverService {
     public Driver addHomeLocationToDriver(String driverId, LocationCommand locationCommand);
     Page<Customer> getAllRequestCustomers(String driverId);
     Page<Customer> cancelCustomerIdRequest(String driverId, String customerId);
-    Driver acceptRequest(String customerId, String driverId);
+    Driver acceptRequest_end_start_ride(String customerId, String driverId);
 
 }

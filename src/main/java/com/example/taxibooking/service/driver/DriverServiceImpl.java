@@ -5,6 +5,7 @@ import com.example.taxibooking.command.DriverCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.dto.DriverDto;
+import com.example.taxibooking.enums.DriverApproveStatus;
 import com.example.taxibooking.exception.BusinessException;
 import com.example.taxibooking.exception.ExceptionPayloadFactory;
 import com.example.taxibooking.mapper.CustomerMapper;
@@ -115,7 +116,7 @@ public class DriverServiceImpl implements DriverService{
         return driverRepository.save(driver);
     }
     @Override
-    public Driver acceptRequest(String driverId, String customerId){
+    public Driver acceptRequest_end_start_ride(String driverId, String customerId){
         final Customer customer = customerService.findById(customerId);
         final Driver driver = findDriverById(driverId);
 
@@ -125,11 +126,22 @@ public class DriverServiceImpl implements DriverService{
         }else{
             notificationCustomer = customer.getNotificationCustomer();
         }
+        driver.setDriverApproveStatus(DriverApproveStatus.IN_RIDE);
+        driver.setIsAvailable(Boolean.FALSE);
+
         notificationCustomer.linkToDriverNotification(driver);
         notificationCustomerRepository.save(notificationCustomer);
         customer.linkToDriver(driver);
 
         return driverRepository.save(driver);
     }
+    public void end_ride_with_client(String driverId, String customerId){
+        final Driver driver = findDriverById(driverId);
+        final Customer customer = customerService.findById(customerId);
 
+
+        driver.setIsAvailable(Boolean.TRUE);
+        driver.setDriverApproveStatus(DriverApproveStatus.COMPLETED);
+        driver.setLastKnownLocation(customer.getWork());
+    }
 }

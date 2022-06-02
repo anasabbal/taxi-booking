@@ -5,6 +5,7 @@ import com.example.taxibooking.command.CustomerCommand;
 import com.example.taxibooking.command.LocationCommand;
 import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.enums.DriverStatus;
+import com.example.taxibooking.enums.Rating;
 import com.example.taxibooking.exception.BusinessException;
 import com.example.taxibooking.exception.ExceptionPayloadFactory;
 import com.example.taxibooking.mapper.CustomerMapper;
@@ -146,5 +147,17 @@ public class CustomerServiceImpl implements CustomerService {
         notificationDriver.removeFrom(customer);
 
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public String addRating_Driver(String driverId, String rating) {
+        final Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new BusinessException(ExceptionPayloadFactory.DRIVER_NOT_FOUND.get()));
+
+        driver.setRating(Rating.valueOf(rating));
+
+        driverRepository.save(driver);
+
+        return "rating driver with payload " + JSONUtil.toJSON(driver);
     }
 }
