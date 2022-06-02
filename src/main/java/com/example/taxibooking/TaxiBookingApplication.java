@@ -12,18 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableJpaAuditing
 @RequiredArgsConstructor
 public class TaxiBookingApplication implements CommandLineRunner{
-    private final CustomerRepository customerRepository;
-    private final DriverRepository driverRepository;
-    private final NotificationDriverRepository notificationDriverRepository;
-    private final NotificationCustomerRepository notificationCustomerRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(TaxiBookingApplication.class, args);

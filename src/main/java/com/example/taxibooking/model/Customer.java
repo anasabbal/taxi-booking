@@ -23,6 +23,7 @@ public class Customer extends AbstractEntity{
     private String firstName;
     private String email;
     private String phone;
+    private String password;
     @ManyToOne
     private Driver driver;
     @Enumerated(EnumType.STRING)

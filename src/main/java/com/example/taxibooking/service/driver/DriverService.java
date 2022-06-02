@@ -20,5 +20,6 @@ public interface DriverService {
     Page<Customer> getAllRequestCustomers(String driverId);
     Page<Customer> cancelCustomerIdRequest(String driverId, String customerId);
     Driver acceptRequest_end_start_ride(String customerId, String driverId);
+    void end_ride_with_client(String driverId, String customerId);
 
 }

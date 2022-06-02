@@ -135,6 +135,7 @@ public class DriverServiceImpl implements DriverService{
 
         return driverRepository.save(driver);
     }
+    @Override
     public void end_ride_with_client(String driverId, String customerId){
         final Driver driver = findDriverById(driverId);
         final Customer customer = customerService.findById(customerId);

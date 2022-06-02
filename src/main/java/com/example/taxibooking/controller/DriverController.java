@@ -79,8 +79,15 @@ public class DriverController {
     @PostMapping("/accept/request/{driverId}/{customerId}")
     public ResponseEntity<DriverDto> acceptRequest(@PathVariable("driverId") final String driverId,
                                                    @PathVariable("customerId") final String customerId){
-        final Driver driver = driverService.acceptRequest(driverId, customerId);
+        final Driver driver = driverService.acceptRequest_end_start_ride(driverId, customerId);
 
         return ResponseEntity.ok(driverMapper.toDriverDto(driver));
+    }
+    @PostMapping("/endRide/{driverId}/{customerId}")
+    public ResponseEntity<Void> endRideWithCustomer(@PathVariable("driverId") final String driverId,
+                                                    @PathVariable("customerId") final String customerId){
+        driverService.end_ride_with_client(driverId, customerId);
+
+        return ResponseEntity.noContent().build();
     }
 }

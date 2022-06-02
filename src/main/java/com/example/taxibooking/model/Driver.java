@@ -24,6 +24,10 @@ public class Driver extends AbstractEntity{
     private DriverApproveStatus driverApproveStatus = DriverApproveStatus.SCHEDULED;
     @Enumerated(EnumType.STRING)
     private DriverStatus status = DriverStatus.DENIED;
+
+    private String password;
+
+
     @Enumerated(EnumType.STRING)
     private DriverType driverType = DriverType.TAXI;
 

@@ -11,6 +11,7 @@ import com.example.taxibooking.exception.ExceptionPayloadFactory;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.mapper.NotificationCustomerMapper;
 import com.example.taxibooking.model.*;
+import com.example.taxibooking.payload.JwtSignUp;
 import com.example.taxibooking.repository.CustomerRepository;
 import com.example.taxibooking.repository.DriverRepository;
 import com.example.taxibooking.repository.NotificationCustomerRepository;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final LocationService locationService;
     private final DriverRepository driverRepository;
     private final NotificationDriverRepository notificationDriverRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -159,5 +162,21 @@ public class CustomerServiceImpl implements CustomerService {
         driverRepository.save(driver);
 
         return "rating driver with payload " + JSONUtil.toJSON(driver);
+    }
+
+    @Override
+    public Customer signup(JwtSignUp jwtSignUp) {
+        final Customer customer = new Customer();
+        customer.setFirstName(jwtSignUp.getFirstName());
+        customer.setGender(jwtSignUp.getGender());
+        customer.setPassword(passwordEncoder.encode(jwtSignUp.getPassword()));
+        customer.setEmail(jwtSignUp.getEmail());
+
+        final Account account = new Account();
+        account.setEmail(customer.getEmail());
+        account.setPassword(customer.getPassword());
+        customer.setAccount(account);
+
+        return customerRepository.save(customer);
     }
 }

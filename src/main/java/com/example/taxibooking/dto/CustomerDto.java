@@ -18,6 +18,7 @@ public class CustomerDto {
     private String firstName;
     private String phone;
     private Gender gender;
+    private String password;
     private LocationDto home;
     private LocationDto work, lastKnownLocation;
     private DriverDto driver;

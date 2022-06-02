@@ -7,6 +7,7 @@ import com.example.taxibooking.dto.CustomerDto;
 import com.example.taxibooking.mapper.CustomerMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
+import com.example.taxibooking.payload.JwtSignUp;
 import com.example.taxibooking.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import okhttp3.internal.connection.RealConnectionPool;
@@ -86,5 +87,11 @@ public class CustomerController {
     @PostMapping("/rating/{driverId}")
     public ResponseEntity<String> addRatingToDriver(@PathVariable("driverId") final String driverId, String rating){
         return ResponseEntity.ok(customerService.addRating_Driver(driverId, rating));
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<CustomerDto> signup(@RequestBody JwtSignUp jwtSignUp){
+        final Customer customer = customerService.signup(jwtSignUp);
+
+        return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
     }
 }

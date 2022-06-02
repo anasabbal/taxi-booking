@@ -16,6 +16,7 @@ public class DriverDto {
     private String id;
     private String status;
     private String driverApproveStatus;
+    private String password;
     private String driverType;
     private String rating;
     private LocationDto lastKnownLocation;
