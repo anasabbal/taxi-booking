@@ -13,6 +13,5 @@ public interface CustomerNotificationService {
     Page<NotificationCustomerDto> getAllNotificationCustomer(Pageable pageable);
 
     NotificationCustomer findNotificationCustomerById(String notificationCustomerId);
-
-    NotificationDriver sendRequestToDriver(String customerId, NotificationDriver notificationCustomerId);
+    void clearAllNotificationCustomer(String customerId);
 }

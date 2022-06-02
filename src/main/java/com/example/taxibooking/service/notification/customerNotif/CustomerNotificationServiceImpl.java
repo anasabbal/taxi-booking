@@ -8,6 +8,7 @@ import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.model.NotificationCustomer;
 import com.example.taxibooking.model.NotificationDriver;
 import com.example.taxibooking.repository.NotificationCustomerRepository;
+import com.example.taxibooking.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
 
     private final NotificationCustomerRepository notificationCustomerRepository;
     private final NotificationCustomerMapper notificationCustomerMapper;
+    private final CustomerService customerService;
 
 
     @Override
@@ -37,7 +39,9 @@ public class CustomerNotificationServiceImpl implements CustomerNotificationServ
     }
 
     @Override
-    public NotificationDriver sendRequestToDriver(String customerId, NotificationDriver notificationCustomerId) {
-        return null;
+    public void clearAllNotificationCustomer(String customerId) {
+        final Customer customer = customerService.findById(customerId);
+        final NotificationCustomer notificationCustomer = customer.getNotificationCustomer();
+        notificationCustomer.clearAll();
     }
 }

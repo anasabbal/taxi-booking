@@ -37,4 +37,7 @@ public class NotificationDriver {
     public void removeFrom(Customer customer){
         this.customers.remove(customer);
     }
+    public void clearAll(){
+        this.customers.clear();
+    }
 }

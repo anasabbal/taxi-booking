@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,5 +24,10 @@ public class NotificationCustomerController {
     @GetMapping("/customers/notification/{customerId}")
     public ResponseEntity<NotificationCustomer> getNotificationCustomerId(@PathVariable("customerId") final String customerId){
         return ResponseEntity.ok(customerNotificationService.findNotificationCustomerById(customerId));
+    }
+    @DeleteMapping("/deleteAll/{customerId}")
+    public ResponseEntity<Void> deleteAllNotificationCustomer(@PathVariable("customerId") final String customerId){
+        customerNotificationService.clearAllNotificationCustomer(customerId);
+        return ResponseEntity.noContent().build();
     }
 }

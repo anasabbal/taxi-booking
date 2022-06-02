@@ -36,4 +36,7 @@ public class NotificationCustomer {
     public void removeDriverForm(Driver driver){
         this.drivers.remove(driver);
     }
+    public void clearAll(){
+        this.drivers.clear();
+    }
 }
