@@ -17,7 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 @EnableJpaAuditing
 @RequiredArgsConstructor
 public class TaxiBookingApplication implements CommandLineRunner{

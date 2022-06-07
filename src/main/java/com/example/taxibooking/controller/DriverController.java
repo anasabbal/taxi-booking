@@ -10,14 +10,12 @@ import com.example.taxibooking.mapper.DriverMapper;
 import com.example.taxibooking.model.Customer;
 import com.example.taxibooking.model.Driver;
 import com.example.taxibooking.service.driver.DriverService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.DocFlavor;
 
 @RestController
 @RequestMapping("/v1/driver")

@@ -21,6 +21,7 @@ public class LocationServiceImpl implements LocationService{
     @Override
     public ExactLocation createLocation(LocationCommand locationCommand) {
         log.info("Begin creating Location with payload {}", JSONUtil.toJSON(locationCommand));
+        locationCommand.validate();
 
         final ExactLocation location = locationRepository.save(ExactLocation.createLocation(locationCommand));
 
@@ -38,9 +39,13 @@ public class LocationServiceImpl implements LocationService{
 
     @Override
     public ExactLocation update(String locationId, LocationCommand locationCommand) {
+        log.info("Begin fetching location with id {}", locationId);
         final ExactLocation location = findById(locationId);
+        locationCommand.validate();
 
+        log.info("Begin updating location with payload {}", JSONUtil.toJSON(location));
         location.updateLocation(locationCommand);
+        log.info("Updating location with id {} Done !", locationId);
 
         return locationRepository.save(location);
     }

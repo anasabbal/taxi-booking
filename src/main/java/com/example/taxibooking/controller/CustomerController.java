@@ -88,10 +88,10 @@ public class CustomerController {
     public ResponseEntity<String> addRatingToDriver(@PathVariable("driverId") final String driverId, String rating){
         return ResponseEntity.ok(customerService.addRating_Driver(driverId, rating));
     }
-    @PostMapping("/signup")
+    /*@PostMapping("/signup")
     public ResponseEntity<CustomerDto> signup(@RequestBody JwtSignUp jwtSignUp){
         final Customer customer = customerService.signup(jwtSignUp);
 
         return ResponseEntity.ok(customerMapper.toCustomerDto(customer));
-    }
+    }*/
 }

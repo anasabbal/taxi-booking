@@ -22,5 +22,5 @@ public interface CustomerService {
 
     String addRating_Driver(String driverId, String rating);
 
-    Customer signup(JwtSignUp jwtSignUp);
+    //Customer signup(JwtSignUp jwtSignUp);
 }

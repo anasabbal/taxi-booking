@@ -37,7 +37,6 @@ public class CustomerServiceImpl implements CustomerService {
     private final LocationService locationService;
     private final DriverRepository driverRepository;
     private final NotificationDriverRepository notificationDriverRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Page<Customer> getAllCustomer(Pageable pageable) {
@@ -48,6 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
     //@Transactional(readOnly = true)
     public Customer save(CustomerCommand customerCommand) {
         log.info("Begin creating user with payload {}", JSONUtil.toJSON(customerCommand));
+        customerCommand.validate();
         final ExactLocation home = customerCommand.getHome() == null ? null : locationService.findById(customerCommand.getHome());
         final ExactLocation work = customerCommand.getWork() == null ? null : locationService.findById(customerCommand.getWork());
         final ExactLocation lastKnownLocation = customerCommand.getLastLocation() == null ? null : locationService.findById(customerCommand.getLastLocation());
@@ -66,6 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer addHomeLocation(String customerId, final LocationCommand locationCommand){
         final Customer customer = findById(customerId);
+        locationCommand.validate();
 
         final ExactLocation home = locationService.createLocation(locationCommand);
 
@@ -77,6 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer addWorkLocation(String customerId, LocationCommand locationCommand) {
         final Customer customer = findById(customerId);
+        locationCommand.validate();
 
         final ExactLocation work = locationService.createLocation(locationCommand);
 
@@ -88,6 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer addLastLocation(String customerId, LocationCommand locationCommand) {
         final Customer customer = findById(customerId);
+        locationCommand.validate();
 
         final ExactLocation last = locationService.createLocation(locationCommand);
 
@@ -107,6 +110,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomerLocation(String customerId, LocationCommand location) {
         final Customer customer = findById(customerId);
+        location.validate();
 
         ExactLocation exactLocation = ExactLocation.builder().longitude(location.getLongitude())
                 .latitude(location.getLatitude())
@@ -122,21 +126,22 @@ public class CustomerServiceImpl implements CustomerService {
         final Driver driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new BusinessException(ExceptionPayloadFactory.DRIVER_NOT_FOUND.get()));
 
+        final NotificationDriver notificationDriver;
+
         if(driver.getNotificationDriver() == null){
-            final NotificationDriver notificationDriver = new NotificationDriver();
+            notificationDriver = new NotificationDriver();
             log.info("Notification Driver with payload {}", JSONUtil.toJSON(notificationDriver));
-            notificationDriver.linkToCustomer(customer);
-            driver.linkToNotificationDriver(notificationDriver);
-            driverRepository.save(driver);
-            notificationDriverRepository.save(notificationDriver);
+
         }else {
-            final NotificationDriver notificationDriver = driver.getNotificationDriver();
-            notificationDriver.linkToCustomer(customer);
-            driver.linkToNotificationDriver(notificationDriver);
-            driverRepository.save(driver);
+            notificationDriver = driver.getNotificationDriver();
+
             log.info("driver with payload {}", JSONUtil.toJSON(driver));
-            notificationDriverRepository.save(notificationDriver);
         }
+        notificationDriver.linkToCustomer(customer);
+        driver.linkToNotificationDriver(notificationDriver);
+        driverRepository.save(driver);
+
+        notificationDriverRepository.save(notificationDriver);
         return customerRepository.save(customer);
     }
     @Override
@@ -148,6 +153,7 @@ public class CustomerServiceImpl implements CustomerService {
         //customer.getNotificationCustomer().removeDriverForm(driver);
         final NotificationDriver notificationDriver = driver.getNotificationDriver();
         notificationDriver.removeFrom(customer);
+        log.info("Cancel request from customer with id {} to driver with id {}", customerId, driverId );
 
         return customerRepository.save(customer);
     }
@@ -164,7 +170,7 @@ public class CustomerServiceImpl implements CustomerService {
         return "rating driver with payload " + JSONUtil.toJSON(driver);
     }
 
-    @Override
+    /*@Override
     public Customer signup(JwtSignUp jwtSignUp) {
         final Customer customer = new Customer();
         customer.setFirstName(jwtSignUp.getFirstName());
@@ -178,5 +184,5 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setAccount(account);
 
         return customerRepository.save(customer);
-    }
+    }*/
 }
